@@ -17,7 +17,7 @@ layer {
 	force_color: true
 	resize_param {
       prob: 0.1
-      resize_mode: WARP
+      resize_mode: FIT_LARGE_SIZE_AND_PAD
       height: 608
       width: 608
       interp_mode: LINEAR
@@ -26,7 +26,7 @@ layer {
     }
     resize_param {
       prob: 0.1
-      resize_mode: WARP
+      resize_mode: FIT_LARGE_SIZE_AND_PAD
       height: 416
       width: 416
       interp_mode: LINEAR
@@ -35,7 +35,7 @@ layer {
     }
 	resize_param {
       prob: 0.1
-      resize_mode: WARP
+      resize_mode: FIT_LARGE_SIZE_AND_PAD
       height: 320
       width: 320
       interp_mode: LINEAR
@@ -44,7 +44,7 @@ layer {
     }
 	resize_param {
       prob: 0.1
-      resize_mode: WARP
+      resize_mode: FIT_LARGE_SIZE_AND_PAD
       height: 352
       width: 352
       interp_mode: LINEAR
@@ -53,7 +53,7 @@ layer {
     }
 	resize_param {
       prob: 0.1
-      resize_mode: WARP
+      resize_mode: FIT_LARGE_SIZE_AND_PAD
       height: 384
       width: 384
       interp_mode: LINEAR
@@ -62,7 +62,7 @@ layer {
     }
 	resize_param {
       prob: 0.1
-      resize_mode: WARP
+      resize_mode: FIT_LARGE_SIZE_AND_PAD
       height: 448
       width: 448
       interp_mode: LINEAR
@@ -71,7 +71,7 @@ layer {
     }
 	resize_param {
       prob: 0.1
-      resize_mode: WARP
+      resize_mode: FIT_LARGE_SIZE_AND_PAD
       height: 480
       width: 480
       interp_mode: LINEAR
@@ -80,7 +80,7 @@ layer {
     }
 	resize_param {
       prob: 0.1
-      resize_mode: WARP
+      resize_mode: FIT_LARGE_SIZE_AND_PAD
       height: 512
       width: 512
       interp_mode: LINEAR
@@ -89,7 +89,7 @@ layer {
     }
 	resize_param {
       prob: 0.1
-      resize_mode: WARP
+      resize_mode: FIT_LARGE_SIZE_AND_PAD
       height: 544
       width: 544
       interp_mode: LINEAR
@@ -98,7 +98,7 @@ layer {
     }
 	resize_param {
       prob: 0.1
-      resize_mode: WARP
+      resize_mode: FIT_LARGE_SIZE_AND_PAD
       height: 576
       width: 576
       interp_mode: LINEAR
@@ -123,15 +123,11 @@ layer {
       saturation_upper: 1.5
       random_order_prob: 0.0
     }
-    expand_param {
-      prob: 0.5
-      max_expand_ratio: 2.0
-    }
   }
   
   data_param {
     source: "examples/coco/coco_train_lmdb"
-    batch_size: 5
+    batch_size: 4
     backend: LMDB
   }
   annotated_data_param {
@@ -2296,7 +2292,7 @@ layer {
     decay_mult: 1
   }
   convolution_param {
-    num_output: 512
+    num_output: 128
     bias_term: false
     kernel_size: 1
     weight_filler {
@@ -2352,28 +2348,28 @@ layer {
   top: "conv17"
 }
 layer {
-  name: "conv17/sum"
-  type: "Eltwise"
+  name: "conv17/cat"
+  type: "Concat"
   bottom: "conv16"
   bottom: "conv17"
-  top: "conv17/sum"
+  top: "conv17/cat"
 }
 
 layer {
   name: "conv18/dw"
   type: "DepthwiseConvolution"
-  bottom: "conv17/sum"
+  bottom: "conv17/cat"
   top: "conv18/dw"
   param {
     lr_mult: 1
     decay_mult: 1
   }
   convolution_param {
-    num_output: 512
+    num_output: 640
     bias_term: false
     pad: 1
     kernel_size: 3
-    group: 512
+    group: 640
     engine: CAFFE
     weight_filler {
       type: "msra"
@@ -2437,7 +2433,7 @@ layer {
     decay_mult: 1
   }
   convolution_param {
-    num_output: 512
+    num_output: 640
     bias_term: false
     kernel_size: 1
     weight_filler {
@@ -2511,11 +2507,11 @@ layer {
     decay_mult: 1
   }
   convolution_param {
-    num_output: 256
+    num_output: 160
     bias_term: false
     pad: 1
     kernel_size: 3
-    group: 256
+    group: 160
     engine: CAFFE
     weight_filler {
       type: "msra"
@@ -2579,7 +2575,7 @@ layer {
     decay_mult: 1
   }
   convolution_param {
-    num_output: 256
+    num_output: 160
     bias_term: false
     kernel_size: 1
     weight_filler {
@@ -2768,16 +2764,9 @@ layer {
   top: "conv20"
 }
 layer {
-  name: "conv20/sum"
-  type: "Eltwise"
-  bottom: "conv19"
-  bottom: "conv20"
-  top: "conv20/sum"
-}
-layer {
   name: "conv21/dw"
   type: "DepthwiseConvolution"
-  bottom: "conv20/sum"
+  bottom: "conv20"
   top: "conv21/dw"
   param {
     lr_mult: 1
@@ -2788,7 +2777,7 @@ layer {
     bias_term: false
     pad: 1
     kernel_size: 3
-    group: 256
+    group: 128
     engine: CAFFE
     weight_filler {
       type: "msra"
@@ -2852,7 +2841,7 @@ layer {
     decay_mult: 1
   }
   convolution_param {
-    num_output: 512
+    num_output: 256
     bias_term: false
     kernel_size: 1
     weight_filler {
@@ -2907,38 +2896,151 @@ layer {
   bottom: "conv21"
   top: "conv21"
 }
-
 layer {
-  name: "conv22"
-  type: "Convolution"
-  bottom: "conv15"
-  top: "conv22"
-    param {
+  name: "conv21/cat"
+  type: "Concat"
+  bottom: "conv19"
+  bottom: "conv21"
+  top: "conv21/cat"
+}
+layer {
+  name: "conv22/dw"
+  type: "DepthwiseConvolution"
+  bottom: "conv21/cat"
+  top: "conv22/dw"
+  param {
     lr_mult: 1
     decay_mult: 1
   }
-  param {
-    lr_mult: 2
-    decay_mult: 0
-  }
   convolution_param {
-    num_output: 255
-    kernel_size: 1
-    pad: 0
-    stride: 1
+    num_output: 416
+    bias_term: false
+    pad: 1
+    kernel_size: 3
+    group: 416
+    engine: CAFFE
     weight_filler {
       type: "msra"
     }
-	bias_filler {
+  }
+}
+layer {
+  name: "conv22/dw/bn"
+  type: "BatchNorm"
+  bottom: "conv22/dw"
+  top: "conv22/dw"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+}
+layer {
+  name: "conv22/dw/scale"
+  type: "Scale"
+  bottom: "conv22/dw"
+  top: "conv22/dw"
+  param {
+    lr_mult: 1
+    decay_mult: 0.0
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0.0
+  }
+  scale_param {
+    filler {
+      value: 1
+    }
+    bias_term: true
+    bias_filler {
       value: 0
     }
   }
+}
+layer {
+  name: "conv22/dw/relu"
+  type: "ReLU"
+  bottom: "conv22/dw"
+  top: "conv22/dw"
+}
+layer {
+  name: "conv22"
+  type: "Convolution"
+  bottom: "conv22/dw"
+  top: "conv22"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  convolution_param {
+    num_output: 512
+    bias_term: false
+    kernel_size: 1
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "conv22/bn"
+  type: "BatchNorm"
+  bottom: "conv22"
+  top: "conv22"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+}
+layer {
+  name: "conv22/scale"
+  type: "Scale"
+  bottom: "conv22"
+  top: "conv22"
+  param {
+    lr_mult: 1.0
+    decay_mult: 0.0
+  }
+  param {
+    lr_mult: 2.0
+    decay_mult: 0.0
+  }
+  scale_param {
+    filler {
+      value: 1
+    }
+    bias_term: true
+    bias_filler {
+      value: 0
+    }
+  }
+}
+layer {
+  name: "conv22/relu"
+  type: "ReLU"
+  bottom: "conv22"
+  top: "conv22"
 }
 
 layer {
   name: "conv23"
   type: "Convolution"
-  bottom: "conv18"
+  bottom: "conv15"
   top: "conv23"
     param {
     lr_mult: 1
@@ -2965,8 +3067,35 @@ layer {
 layer {
   name: "conv24"
   type: "Convolution"
-  bottom: "conv21"
+  bottom: "conv18"
   top: "conv24"
+    param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 255
+    kernel_size: 1
+    pad: 0
+    stride: 1
+    weight_filler {
+      type: "msra"
+    }
+	bias_filler {
+      value: 0
+    }
+  }
+}
+
+layer {
+  name: "conv25"
+  type: "Convolution"
+  bottom: "conv22"
+  top: "conv25"
     param {
     lr_mult: 1
     decay_mult: 1
@@ -2992,7 +3121,7 @@ layer {
 layer {
   name: "Yolov3Loss1"
   type: "Yolov3"
-  bottom: "conv22"
+  bottom: "conv23"
   bottom: "label"
   top: "det_loss1"
   loss_weight: 1
@@ -3036,7 +3165,7 @@ layer {
 layer {
   name: "Yolov3Loss2"
   type: "Yolov3"
-  bottom: "conv23"
+  bottom: "conv24"
   bottom: "label"
   top: "det_loss2"
   loss_weight: 1
@@ -3081,7 +3210,7 @@ layer {
 layer {
   name: "Yolov3Loss3"
   type: "Yolov3"
-  bottom: "conv24"
+  bottom: "conv25"
   bottom: "label"
   top: "det_loss3"
   loss_weight: 1
