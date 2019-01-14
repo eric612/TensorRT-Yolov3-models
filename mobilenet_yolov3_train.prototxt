@@ -3133,7 +3133,7 @@ layer {
     coord_scale: 1.0
     thresh: 0.7
 	anchors_scale : 32
-	
+	use_focal_loss : true
 	#10,13,  16,30,  33,23,  30,61,  62,45,  59,119,  116,90,  156,198,  373,326
 	
     biases: 10
@@ -3177,7 +3177,7 @@ layer {
     coord_scale: 1.0
     thresh: 0.7
 	anchors_scale : 16
-	
+	use_focal_loss : true
 	#10,13,  16,30,  33,23,  30,61,  62,45,  59,119,  116,90,  156,198,  373,326
 	
     biases: 10
@@ -3222,7 +3222,7 @@ layer {
     coord_scale: 1.0
     thresh: 0.6
 	anchors_scale : 8
-	
+	use_focal_loss : true
 	#10,13,  16,30,  33,23,  30,61,  62,45,  59,119,  116,90,  156,198,  373,326
 	
     biases: 10
