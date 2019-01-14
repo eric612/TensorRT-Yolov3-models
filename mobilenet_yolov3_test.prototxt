@@ -2189,7 +2189,7 @@ layer {
     decay_mult: 1
   }
   convolution_param {
-    num_output: 128
+    num_output: 512
     bias_term: false
     kernel_size: 1
     weight_filler {
@@ -2251,22 +2251,86 @@ layer {
   bottom: "conv17"
   top: "conv17/cat"
 }
-
+layer {
+  name: "conv18_plus"
+  type: "Convolution"
+  bottom: "conv17/cat"
+  top: "conv18_plus"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  convolution_param {
+    num_output: 512
+    bias_term: false
+    kernel_size: 1
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "conv18_plus/bn"
+  type: "BatchNorm"
+  bottom: "conv18_plus"
+  top: "conv18_plus"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+}
+layer {
+  name: "conv18_plus/scale"
+  type: "Scale"
+  bottom: "conv18_plus"
+  top: "conv18_plus"
+  param {
+    lr_mult: 1
+    decay_mult: 0.0
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0.0
+  }
+  scale_param {
+    filler {
+      value: 1
+    }
+    bias_term: true
+    bias_filler {
+      value: 0
+    }
+  }
+}
+layer {
+  name: "conv18_plus/relu"
+  type: "ReLU"
+  bottom: "conv18_plus"
+  top: "conv18_plus"
+}
 layer {
   name: "conv18/dw"
   type: "DepthwiseConvolution"
-  bottom: "conv17/cat"
+  bottom: "conv18_plus"
   top: "conv18/dw"
   param {
     lr_mult: 1
     decay_mult: 1
   }
   convolution_param {
-    num_output: 640
+    num_output: 512
     bias_term: false
     pad: 1
     kernel_size: 3
-    group: 640
+    group: 512
     engine: CAFFE
     weight_filler {
       type: "msra"
@@ -2330,7 +2394,7 @@ layer {
     decay_mult: 1
   }
   convolution_param {
-    num_output: 640
+    num_output: 512
     bias_term: false
     kernel_size: 1
     weight_filler {
@@ -2404,11 +2468,11 @@ layer {
     decay_mult: 1
   }
   convolution_param {
-    num_output: 320
+    num_output: 256
     bias_term: false
     pad: 1
     kernel_size: 3
-    group: 320
+    group: 256
     engine: CAFFE
     weight_filler {
       type: "msra"
