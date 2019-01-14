@@ -2507,11 +2507,11 @@ layer {
     decay_mult: 1
   }
   convolution_param {
-    num_output: 160
+    num_output: 320
     bias_term: false
     pad: 1
     kernel_size: 3
-    group: 160
+    group: 320
     engine: CAFFE
     weight_filler {
       type: "msra"
@@ -2575,7 +2575,7 @@ layer {
     decay_mult: 1
   }
   convolution_param {
-    num_output: 160
+    num_output: 256
     bias_term: false
     kernel_size: 1
     weight_filler {
@@ -2763,78 +2763,19 @@ layer {
   bottom: "conv20"
   top: "conv20"
 }
+
+
 layer {
-  name: "conv21/dw"
-  type: "DepthwiseConvolution"
+  name: "conv20/cat"
+  type: "Concat"
+  bottom: "conv19"
   bottom: "conv20"
-  top: "conv21/dw"
-  param {
-    lr_mult: 1
-    decay_mult: 1
-  }
-  convolution_param {
-    num_output: 256
-    bias_term: false
-    pad: 1
-    kernel_size: 3
-    group: 128
-    engine: CAFFE
-    weight_filler {
-      type: "msra"
-    }
-  }
-}
-layer {
-  name: "conv21/dw/bn"
-  type: "BatchNorm"
-  bottom: "conv21/dw"
-  top: "conv21/dw"
-  param {
-    lr_mult: 0
-    decay_mult: 0
-  }
-  param {
-    lr_mult: 0
-    decay_mult: 0
-  }
-  param {
-    lr_mult: 0
-    decay_mult: 0
-  }
-}
-layer {
-  name: "conv21/dw/scale"
-  type: "Scale"
-  bottom: "conv21/dw"
-  top: "conv21/dw"
-  param {
-    lr_mult: 1
-    decay_mult: 0.0
-  }
-  param {
-    lr_mult: 2
-    decay_mult: 0.0
-  }
-  scale_param {
-    filler {
-      value: 1
-    }
-    bias_term: true
-    bias_filler {
-      value: 0
-    }
-  }
-}
-layer {
-  name: "conv21/dw/relu"
-  type: "ReLU"
-  bottom: "conv21/dw"
-  top: "conv21/dw"
+  top: "conv20/cat"
 }
 layer {
   name: "conv21"
   type: "Convolution"
-  bottom: "conv21/dw"
+  bottom: "conv20/cat"
   top: "conv21"
   param {
     lr_mult: 1
@@ -2897,27 +2838,20 @@ layer {
   top: "conv21"
 }
 layer {
-  name: "conv21/cat"
-  type: "Concat"
-  bottom: "conv19"
-  bottom: "conv21"
-  top: "conv21/cat"
-}
-layer {
   name: "conv22/dw"
   type: "DepthwiseConvolution"
-  bottom: "conv21/cat"
+  bottom: "conv21"
   top: "conv22/dw"
   param {
     lr_mult: 1
     decay_mult: 1
   }
   convolution_param {
-    num_output: 416
+    num_output: 256
     bias_term: false
     pad: 1
     kernel_size: 3
-    group: 416
+    group: 256
     engine: CAFFE
     weight_filler {
       type: "msra"
