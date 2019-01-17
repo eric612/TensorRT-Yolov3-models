@@ -1,8 +1,20 @@
 # TensorRT-Yolov3-model
 
-Replce time consuming component and retrain with [mobilenet-yolov3](https://github.com/eric612/MobileNet-YOLO) , See [issue](https://github.com/lewes6369/TensorRT-Yolov3/issues/9)
+Replace time consuming component and retrain with [mobilenet-yolov3](https://github.com/eric612/MobileNet-YOLO) , See [issue](https://github.com/lewes6369/TensorRT-Yolov3/issues/9)
+
+## COCO
+
+network|mAP|resolution|pretrained|
+:---:|:---:|:---:|:---:|
+MobileNet-YOLOv3-Lite||320|[caffemodel](https://drive.google.com/file/d/1tVdLzBA5T_HjDQkJv2ldr99X-T_s5UMn/view)|
+
+## Modify items
+
+* Eltwise -> Concat
+* Remove maxpooling
+* Add 1x1 convolution 
 
 ## Issue
 
-If use concat layer instead of eltwise layer , after the first snapshot , the loss will not be convergence. So I will stop training and resume solverstate again , and it works fine.
+MobileNet-YOLO get a strange mAP , so I upload MobileNet-YOLO-Lite first
  
