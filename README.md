@@ -4,10 +4,10 @@ Replace time consuming component and retrain with [mobilenet-yolov3](https://git
 
 ## COCO
 
-network|mAP|resolution|pretrained|
+network|mAP (IOU 0.5)|resolution|pretrained|
 :---:|:---:|:---:|:---:|
-MobileNet-YOLOv3-Lite||320|[caffemodel](https://drive.google.com/file/d/1tVdLzBA5T_HjDQkJv2ldr99X-T_s5UMn/view)|
-
+MobileNet-YOLOv3-Lite|34.1|320|[caffemodel](https://drive.google.com/file/d/1tVdLzBA5T_HjDQkJv2ldr99X-T_s5UMn/view)|
+MobileNet-YOLOv3-Lite|37.5|416|[caffemodel](https://drive.google.com/file/d/1tVdLzBA5T_HjDQkJv2ldr99X-T_s5UMn/view)|
 ## Modify items
 
 * Eltwise -> Concat
