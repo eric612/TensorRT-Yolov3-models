@@ -13,8 +13,3 @@ MobileNet-YOLOv3-Lite|37.5|416|[caffemodel](https://drive.google.com/file/d/1tVd
 * Eltwise -> Concat
 * Remove maxpooling
 * Add 1x1 convolution 
-
-## Issue
-
-MobileNet-YOLO get a strange mAP , so I upload MobileNet-YOLO-Lite first
- 
