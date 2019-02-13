@@ -2,6 +2,12 @@
 
 Replace time consuming component and retrain with [mobilenet-yolov3](https://github.com/eric612/MobileNet-YOLO) , See [issue](https://github.com/lewes6369/TensorRT-Yolov3/issues/9)
 
+## Inference project
+
+I modify some code from lewes's project and update on [fork](https://github.com/eric612/TensorRT-Yolov3) 
+
+Note : mobilenet-yolov3-lite need change anchors config , I have not test yet , maybe I will update in a few days.
+
 ## COCO
 
 network|mAP (IOU 0.5)|resolution|netscope|Inference time
