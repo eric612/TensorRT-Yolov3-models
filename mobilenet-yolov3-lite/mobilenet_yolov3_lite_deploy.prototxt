@@ -952,6 +952,4 @@ layer {
     top: "yolo-det"
     name: "yolo-det"
     type: "Yolo"
-	yolov3_detection_output_param {
-	}
 }
