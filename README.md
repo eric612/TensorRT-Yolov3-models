@@ -1,6 +1,6 @@
 # TensorRT-Yolov3-model
 
-Deploy model was trained from  [mobilenet-yolov3](https://github.com/eric612/MobileNet-YOLO) 
+Deploy model was trained from  [mobilenet-yolov3](https://github.com/eric612/MobileNet-YOLO), inference speed was listed [here](https://github.com/eric612/Jetson-nano-benchmark)
 
 ## Inference project
 
